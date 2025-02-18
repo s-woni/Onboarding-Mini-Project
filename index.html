@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="overlayStyle.css">
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="overlayComment.js"></script>
+</head>
+
+<body>
+
+    <button id="overlayBtn">테스트 버튼</button>
+    <!-- 각자 개인 프로필에 연결 및 id 변경-->
+
+    <div id="overlay">
+        <div id="overlayContent">
+            <button id="closeBtn">X</button>
+            <h1> 팀원 이름 </h1>
+            <div id="overlayContentBox">
+                <img id="profileImage"
+                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDExMTNfMTcg%2FMDAxNzMxNDI2MjUyMjgw.afITt89e6_P1lRQYFpGiKyT2mrKHtQDYCnpKL6y-LvMg.nIt3uN-pTkHeGLh0olYVQccBGPHr_RlWrVLwVhvYpPAg.JPEG%2FIMG_2936.jpeg&type=a340"
+                    alt="프로필 사진">
+                <div id="socialIcons">
+                    <a href="https://your-blog-url.com" target="_blank" title="블로그"><i class="fas fa-blog"></i></a>
+                    <a href="https://github.com/your-github" target="_blank" title="깃허브"><i class="fab fa-github"></i></a>
+                </div>
+
+                <div id="infoBox">
+                    <h2>이름 : 테스트</h2>
+                    <h2>성별 : 남</h2>
+                    <h2>나이 : 2000.00.00 / 00세</h2>
+                    <h2>MBTI : ABCD</h2>
+                    <h2>취미 : 취미1, 취미2</h2>
+                    <h2>소개 : <span>소개 테스트란 입니다 Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae eius, distinctio aspernatur voluptatem sit quo expedita tempore delectus perspiciatis, molestiae culpa nam repudiandae dignissimos voluptas? Repellendus consequatur ipsum voluptate natus.</span></h2>
+                </div>
+            </div>
+
+            <div id="commentSection">
+                <div id="commentList">
+                </div>
+
+                <div id="commentInputBox">
+                    <input type="text" id="commentNameInput" placeholder="이름"/>
+                    <textarea id="commentText" placeholder="댓글을 입력하세요..."></textarea>
+                    <button id="submitComment">댓글 남기기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -35,16 +35,16 @@
 
             $(document).on("click", ".showInfoLink", function () {
                 console.log($(this).data());
-                $('#overlay').fadeIn();
+                $('.overlay').fadeIn();
             });
 
-            $("#closeBtn").click(function () {
-                $('#overlay').fadeOut();
+            $(".closeBtn").click(function () {
+                $('.overlay').fadeOut();
             });
 
             $('#overlay').click(function (event) {
-                if (!$(event.target).closest('#overlayContent').length) {
-                    $('#overlay').fadeOut();
+                if (!$(event.target).closest('.overlayContent').length) {
+                    $('.overlay').fadeOut();
                 }
             });
         });
@@ -224,21 +224,21 @@
         </div>
     </div> -->
 
-    <div id="overlay">
-        <div id="overlayContent">
-            <button id="closeBtn">X</button>
+    <div class="overlay">
+        <div class="overlayContent">
+            <button class="closeBtn">X</button>
             <h1> 팀원 이름 </h1>
-            <div id="overlayContentBox">
-                <img id="profileImage"
+            <div class="overlayContentBox">
+                <img class="profileImage"
                     src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDExMTNfMTcg%2FMDAxNzMxNDI2MjUyMjgw.afITt89e6_P1lRQYFpGiKyT2mrKHtQDYCnpKL6y-LvMg.nIt3uN-pTkHeGLh0olYVQccBGPHr_RlWrVLwVhvYpPAg.JPEG%2FIMG_2936.jpeg&type=a340"
                     alt="프로필 사진">
-                <div id="socialIcons">
+                <div class="socialIcons">
                     <a href="https://your-blog-url.com" target="_blank" title="블로그"><i class="fas fa-blog"></i></a>
                     <a href="https://github.com/your-github" target="_blank" title="깃허브"><i
                             class="fab fa-github"></i></a>
                 </div>
 
-                <div id="infoBox">
+                <div class="infoBox">
                     <h2>이름 : 테스트</h2>
                     <h2>성별 : 남</h2>
                     <h2>나이 : 2000.00.00 / 00세</h2>
@@ -251,14 +251,14 @@
                 </div>
             </div>
 
-            <div id="commentSection">
-                <div id="commentList">
+            <div class="commentSection">
+                <div class="commentList">
                 </div>
 
-                <div id="commentInputBox">
-                    <input type="text" id="commentNameInput" placeholder="이름" />
-                    <textarea id="commentText" placeholder="댓글을 입력하세요..."></textarea>
-                    <button id="submitComment">댓글 남기기</button>
+                <div class="commentInputBox">
+                    <input type="text" class="commentNameInput" placeholder="이름" />
+                    <textarea class="commentText" placeholder="댓글을 입력하세요..."></textarea>
+                    <button class="submitComment">댓글 남기기</button>
                 </div>
             </div>
         </div>

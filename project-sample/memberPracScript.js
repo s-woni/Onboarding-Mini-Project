@@ -1,7 +1,7 @@
 // Firebase SDK 라이브러리 가져오기
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-import { collection, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { collection, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import { getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 // Firebase 구성 정보 설정
@@ -76,13 +76,18 @@ function checkComment() {
     let fields = [
         { id: "#guest-name", message: "이름을 입력하세요." },
         { id: "#guest-pw", message: "비밀번호 입력하세요." },
-        { id: "#guest-comment", message: "내용을 선택하세요." }
+        { id: "#guest-comment", message: "내용을 입력하세요." }
     ];
 
     // 첫 번째로 비어있는 필드 찾기
     for (let i = 0; i < fields.length; i++) {
-        let value = $(fields[i].id).val().trim();
-        if (!value || value == "선택") {
+        let value = "";
+        if (fields[i].id == "#guest-comment") {
+            value = $(fields[i].id).text().trim();    
+        } else {
+            value = $(fields[i].id).val().trim();
+        }
+        if (value == "") {
             alert(fields[i].message); // 첫 번째로 비어있는 필드의 메시지만 띄움
             $(fields[i].id).focus(); // 해당 입력 필드에 포커스
             return;
@@ -188,13 +193,79 @@ $(document).ready(function () {
 
     });
 
+    // 방명록 수정
+    $(document).on("click", "#guestbook-update-btn", async function () {
+        let list = $(this).closest("li");
+        let index = list.find(".guestbook-index").text().trim(); // index 값 가져오기
+        let updateComment = list.find("#update-guest-comment").html().trim(); // 업데이트할 댓글
+        let updateDate = getFormattedDate(); // 현재 날짜
+    
+        let updateDocData = {
+            'comment': updateComment,
+            'date': updateDate
+        };
+    
+        console.log("index: ", index);
+        console.log("updateComment: ", updateComment);
+        console.log("updateDate: ", updateDate);
+
+        try {
+            const guestbookRef = collection(db, "guestbook");
+            const q = query(guestbookRef, where("index", "==", Number(index))); // 숫자로 변환하여 비교
+            const querySnapshot = await getDocs(q);
+    
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach(async (docSnap) => {
+                    let docRef = doc(db, "guestbook", docSnap.id); // 문서 ID 가져오기
+                    
+                    await updateDoc(docRef, updateDocData); // 문서 업데이트
+                    
+                    console.log(`문서 (${docSnap.id}) 업데이트 완료!`);
+                    
+                    // 댓글 수정창 삭제
+                    list.remove();
+                    // 업데이트 후 목록 새로고침
+                    loadGuestbook();
+                });
+
+            } else {
+                console.log("해당 index를 가진 문서를 찾을 수 없습니다.");
+            }
+        } catch (error) {
+            console.error("문서 업데이트 실패:", error);
+        }        
+    });
+
     $(document).on("click", ".guest-delete", deleteComment);
 
-    $(document).on("mouseenter", ".guest-delete", function () {
+    $(document).on("mouseenter", ".guest-delete, .guest-update", function () {
         $(this).css("color", "black");
     });
 
-    $(document).on("mouseleave", ".guest-delete", function () {
+    $(document).on("mouseleave", ".guest-delete, .guest-update", function () {
         $(this).css("color", "gray");
     });
+
+    $(document).on("click", ".guest-update", function () {
+        console.log("수정 버튼 클릭");
+
+        let list = $(this).closest("li");
+        let index = list.find(".guestbook-index").text(); // 방명록 인덱스
+        let pwd = list.find(".guest-pw").text(); // 방명록 비밀번호
+        let comment = list.find(".guest-comment").html(); // 수정 전 방명록
+
+        let password = prompt("비밀번호를 입력하세요.");
+
+        if (password == pwd) {
+            let template = $("#update-guestbook")[0];
+            let temp = $(template.content.cloneNode(true));
+
+            temp.find('.guestbook-index').text(index);
+            temp.find('.guest-pw').text(pwd);
+            temp.find('#update-guest-comment').html(comment);
+            list.after(temp);
+        } else {
+            alert("비밀번호가 일치하지 않습니다.");
+        }
+    })
 });

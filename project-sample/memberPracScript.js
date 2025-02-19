@@ -85,11 +85,10 @@ function checkComment() {
         if (!value || value == "선택") {
             alert(fields[i].message); // 첫 번째로 비어있는 필드의 메시지만 띄움
             $(fields[i].id).focus(); // 해당 입력 필드에 포커스
-            return false;
-        } else {
-            return true;
+            return;
         }
     }
+    return true;
 }
 
 async function deleteComment() {

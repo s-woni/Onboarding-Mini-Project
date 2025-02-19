@@ -112,7 +112,7 @@
 
     margin-left: 15px;
 
-    color: .333;
+    color: #333;
 }
 
 .socialIcons>a:hover {
@@ -196,7 +196,7 @@
 .submitComment {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: .0073e6;
+    background-color: #0073e6;
     color: white;
     border: none;
     border-radius: 5px;
@@ -204,5 +204,5 @@
 }
 
 .submitComment:hover {
-    background-color: .005bb5;
+    background-color: #005bb5;
 }

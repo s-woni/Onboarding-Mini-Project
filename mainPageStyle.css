@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Poor+Story&display=swap');
+
+        * {
+            font-family: "Gowun Dodum", serif;
+        }
+
+        #title {
+            width: 70%;
+        }
+
+        #title h1 {
+            font-family: "Poor Story", serif;
+            font-size: 60px;
+        }
+
+        #title p {
+            font-size: 25px;
+            margin-left: 3px;
+            margin-bottom: 10px;
+        }
+
+        #titleImg {
+            border-radius: 10px;
+        }
+
+        #cards {
+            width: 85%;
+            margin: 5px auto 20px auto;
+        }
+
+        .col>div {
+            border-radius: 10px;
+        }
+
+        .image {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .card-text {
+            margin-bottom: 5px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete {
+            color: gray;
+
+            margin-left: auto;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-body {
+            margin: 10px;
+            padding: 0px 10px;
+        }
+
+        .modal-body>.row {
+            height: 70px;
+            align-items: center;
+        }
+
+        .col-md {
+            margin: 5px 0px;
+        }
+
+        .form-floating {
+            margin: 5px;
+        }
+
+        .form-floating:has(#modalMsg) {
+            margin-bottom: 15px;
+        }
+
+        .index {
+            display: none;
+        }
+
+        .showInfoLink {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }

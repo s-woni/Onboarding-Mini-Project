@@ -83,6 +83,14 @@
     margin: 5px 0px;
 }
 
+.col-md:has(#modalBirth) {
+    padding-right: 0px;
+}
+
+.col-md:has(#modalGender) {
+    padding-left: 0px;
+}
+
 .form-floating {
     margin: 5px;
 }

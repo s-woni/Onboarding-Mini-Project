@@ -9,6 +9,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
     <script type="module" src="main.js"></script>
     <script type="module" src="member.js"></script>
 </head>
@@ -151,18 +152,20 @@
                     <div class="row g-2">
                         <div class="col-md">
                             <div class="form-floating">
+                                <select class="form-select" id="modalBirth" aria-label="Floating label select example">
+                                    <option selected>선택</option>
+                                </select>
+                                <label for="floatingSelect">출생년도</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating">
                                 <select class="form-select" id="modalGender" aria-label="Floating label select example">
                                     <option selected>선택</option>
                                     <option value="남자">남자</option>
                                     <option value="여자">여자</option>
                                 </select>
                                 <label for="floatingSelect">성별</label>
-                            </div>
-                        </div>
-                        <div class="col-md">
-                            <div class="form-floating">
-                                <input class="form-control" placeholder="Leave a comment here" id="modalAge"></input>
-                                <label for="floatingTextarea">나이</label>
                             </div>
                         </div>
                     </div>

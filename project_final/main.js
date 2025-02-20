@@ -23,6 +23,9 @@ const db = getFirestore(app);
 
 $(document).ready(function() {
 
+    // select 값 세팅
+    setSelectValue();
+
     // 팀원 목록 조회
     loadMembers();
 
@@ -58,7 +61,28 @@ $(document).ready(function() {
     $(document).on("click", "#addBtn", function() {
         $("#editBtn").hide();
     });
+
+    // 모달창 닫히면 입력 값 클리어
+    $('#createMember').on('hidden.bs.modal', function () {
+        $("#modalImg").val("");
+        $("#modalName").val("");
+        $("#modalGender").val("선택");
+        $("#modalBirth").val("선택");
+        $("#modalMbti").val("");
+        $("#modalHobby").val("");
+        $("#modalGit").val("");
+        $("#modalBlog").val("");
+        $("#modalMsg").val("");
+    });
 });
+
+// 출생년도 select 값 세팅
+function setSelectValue() {
+    let select = $("#modalBirth");
+    for (let year = 1960; year <= 2020; year++) {
+        select.append(`<option value="${year}">${year}</option>`);
+    }    
+}
 
 // 마지막 인덱스를 가져오는 함수
 async function getLastIndex() {
@@ -79,7 +103,7 @@ function checkInput() {
         { id: "#modalImg", message: "이미지 주소를 입력하세요." },
         { id: "#modalName", message: "이름을 입력하세요." },
         { id: "#modalGender", message: "성별을 선택하세요." },
-        { id: "#modalAge", message: "나이를 입력하세요." },
+        { id: "#modalBirth", message: "출생년도를 선택하세요." },
         { id: "#modalMbti", message: "MBTI를 입력하세요." },
         { id: "#modalHobby", message: "취미를 입력하세요." },
         { id: "#modalGit", message: "GitHub 주소를 입력하세요." },
@@ -110,6 +134,16 @@ function getTodayDate() {
     return `${year}-${month}-${day}`;
 }
 
+function getAge(birth) {
+    let year = new Date().getFullYear();
+    return (year-birth);
+}
+
+function getBirth(age) {
+    let year = new Date().getFullYear();
+    return (year-age);
+}
+
 // 팀원 목록 조회
 async function loadMembers() {
     $("#cards").empty();
@@ -138,7 +172,7 @@ async function loadMembers() {
         temp.find(".image").attr("src", image);
         temp.find(".name").text(name);
         temp.find(".gender").text(gender);
-        temp.find(".age").text(age + "살");
+        temp.find(".age").text(age + "세");
         temp.find(".mbti").text(mbti);
         temp.find(".hobby").text(hobby);
         temp.find(".git").text(git);
@@ -188,7 +222,7 @@ async function addMember() {
     let image = $("#modalImg").val();
     let name = $("#modalName").val();
     let gender = $("#modalGender").val();
-    let age = $("#modalAge").val();
+    let age = getAge($("#modalBirth").val()); // 연 나이
     let mbti = $("#modalMbti").val();
     let hobby = $("#modalHobby").val();
     let git = checkLink(userGit);
@@ -232,13 +266,15 @@ function editBtnEvent() {
     let id = card.data("id"); // Firestore 문서 ID 가져오기
     let index = card.find(".index").text(); // index 값 가져오기
 
+    let age = ageWithSuffix.replace("세", "");
+    let birth = getBirth(Number(age));
+
     // index 값이 올바른지 로그로 확인
     console.log("가져온 index:", index);
 
     // 모달에 기존 정보 세팅
     $("#modalName").val(name);
-    let age = ageWithSuffix.replace("살", "");
-    $("#modalAge").val(age); // 숫자만 설정
+    $("#modalBirth").val(birth); // 숫자만 설정
     $("#modalGender").val(gender);
     $("#modalMbti").val(mbti);
     $("#modalHobby").val(hobby);
@@ -272,7 +308,7 @@ async function editMember() {
     let image = $("#modalImg").val();
     let name = $("#modalName").val();
     let gender = $("#modalGender").val();
-    let age = $("#modalAge").val();
+    let age = getAge($("#modalBirth").val());
     let mbti = $("#modalMbti").val();
     let hobby = $("#modalHobby").val();
     let git = checkLink($("#modalGit").val());

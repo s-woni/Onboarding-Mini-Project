@@ -48,14 +48,14 @@ function checkInput() {
     // 첫 번째로 비어있는 필드 찾기
     for (let i = 0; i < fields.length; i++) {
         let value = $(fields[i].id).val().trim();
-        if (!value || value == "선택") {
+
+        if (value == "" || value == "선택") {
             alert(fields[i].message); // 첫 번째로 비어있는 필드의 메시지만 띄움
             $(fields[i].id).focus(); // 해당 입력 필드에 포커스
-            return false;
-        } else {
-            return true;
+            return;
         }
     }
+    return true;
 }
 
 // 오늘 날짜 2025-02-18 형식으로 가져오기

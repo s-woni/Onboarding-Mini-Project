@@ -51,9 +51,7 @@
     align-items: center;
 }
 
-
-
-.delete, .guest-delete {
+.delete, .guest-delete, .guest-update {
     color: gray;
 
     margin-left: auto;
@@ -61,6 +59,10 @@
 
     display: flex;
     align-items: center;
+}
+
+.guest-update {
+    margin: 0px 10px;
 }
 
 .modal-body {
@@ -165,7 +167,7 @@ a {
 }
 
 .guest-comment-line {
-    margin: 5px 0px 5px 0px; 
+    margin: 5px 0px 5px 0px;
 }
 
 .guest-name {
@@ -190,13 +192,19 @@ a {
     overflow: auto;
 }
 
-#guestbook-input-div {
+#update-guest-comment {
+    height: 80px;
+    margin-right: 10px;
+    overflow: auto;
+}
+
+#guestbook-input-div, #guestbook-update-div {
     display: flex;
     width: 98%;
     margin: 10px 5px 20px 5px;
 }
 
-#guestbook-add-btn {
+#guestbook-add-btn, #guestbook-update-btn {
     margin-left: auto;
     width: 100px;
     border: 1px solid #ced4da;

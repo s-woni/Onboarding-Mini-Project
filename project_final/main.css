@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Poor+Story&display=swap');
+
+* {
+    font-family: "Gowun Dodum", serif;
+}
+
+#title {
+    width: 70%;
+}
+
+#title h1 {
+    font-family: "Poor Story", serif;
+    font-size: 60px;
+}
+
+#title p {
+    font-size: 25px;
+    margin-left: 3px;
+    margin-bottom: 10px;
+}
+
+#titleImg {
+    border-radius: 10px;
+}
+
+#cards {
+    width: 85%;
+    margin: 5px auto 20px auto;
+}
+
+.col>div {
+    border-radius: 10px;
+}
+
+.image {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-text {
+    margin-bottom: 5px;
+}
+
+.card-footer, .guest-comment-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete, .guest-delete, .guest-update {
+    color: gray;
+
+    margin-left: auto;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+.guest-update {
+    margin: 0px 10px;
+}
+
+.modal-body {
+    margin: 10px;
+    padding: 0px 10px;
+}
+
+.modal-body>.row {
+    height: 70px;
+    align-items: center;
+}
+
+.col-md {
+    margin: 5px 0px;
+}
+
+.form-floating {
+    margin: 5px;
+}
+
+.form-floating:has(#modalMsg) {
+    margin-bottom: 15px;
+}
+
+.hiddenCard {
+    display: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.member-info {
+    position: relative;
+    overflow: auto;
+    margin: 10px;
+    padding-left: 5px;
+}
+
+#member-date-div {
+    position: absolute;
+    bottom: 0; /* 부모의 맨 아래 */
+    right: 0;
+
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+#member-image-div {
+    margin: 5px;
+}
+
+#member-name {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-right: 5px;
+}
+
+.member-info label {
+    white-space: nowrap;
+    width: 70px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.member-info span {
+    word-break: break-word;
+    white-space: pre-line;
+}
+
+.member-info div {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+
+.member-info>div:first-child {
+    margin-bottom: 20px;
+    display: block;
+}
+
+#member-link-div {
+    display: flex;
+    margin:30px 0px;
+}
+
+#member-link-div a {
+    margin-right: 25px;
+}
+
+.showInfoLink .image {
+    height: 200px;
+}
+
+#guest-book-div {
+    margin: 5px 5px 15px 5px;
+    padding: 5px;
+    max-height: 350px;
+    overflow: auto;
+}
+
+.guest-comment-line {
+    margin: 5px 0px 5px 0px;
+}
+
+.guest-name {
+    width: 50px;
+    color: gray;
+    margin-right: 20px;
+}
+
+.comment-p {
+    width: 85%;
+    margin: 0px;
+}
+
+#add-guest-book-div .input-group {
+    margin: 5px;
+    width: 98%;
+}
+
+#guest-comment {
+    height: 100px;
+    margin-right: 10px;
+    overflow: auto;
+}
+
+#update-guest-comment {
+    height: 80px;
+    margin-right: 10px;
+    overflow: auto;
+}
+
+#guestbook-input-div, #guestbook-update-div {
+    display: flex;
+    width: 98%;
+    margin: 10px 5px 20px 5px;
+}
+
+#guestbook-add-btn, #guestbook-update-btn {
+    margin-left: auto;
+    width: 100px;
+    border: 1px solid #ced4da;
+}
+
+.guest-date {
+    font-size: 12px;
+    color: gray;
+    display: block;
+
+    margin-top: 10px;
+}

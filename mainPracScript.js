@@ -2,19 +2,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import { collection, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-import { getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { getDocs, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 // Firebase 구성 정보 설정
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyAbwX7tWMJi1gTl_fURKx6FzFQjY6XOoto",
-    authDomain: "sparta-e8b3d.firebaseapp.com",
-    projectId: "sparta-e8b3d",
-    storageBucket: "sparta-e8b3d.firebasestorage.app",
-    messagingSenderId: "677399503700",
-    appId: "1:677399503700:web:6b6359c8c8be5aa61adec1",
-    measurementId: "G-TGCXX8SPG8"
-};
+///
+///데이터베이스 연결
+///
 
 // Firebase 인스턴스 초기화
 const app = initializeApp(firebaseConfig);
@@ -93,6 +86,7 @@ async function loadMembers() {
         let template = $("#cardTemplate")[0];
         let temp = $(template.content.cloneNode(true)); // 템플릿 복사 후 jQuery 객체로 변환
 
+        temp.attr("data-id", id);
         temp.find(".image").attr("src", image);
         temp.find(".name").text(name);
         temp.find(".gender").text(gender);
@@ -106,16 +100,6 @@ async function loadMembers() {
         temp.find(".date").text(date);
 
 
-        // temp.attr("data-id", id); // 카드에 Firestore 문서 ID 저장
-        // temp.find(".name").text(row.name);
-        // temp.find(".age").text(row.age);
-        // temp.find(".gender").text(row.gender);
-        // temp.find(".mbti").text(row.mbti);
-        // temp.find(".hobby").text(row.hobby);
-        // temp.find(".git").text(row.git);
-        // temp.find(".blog").text(row.blog);
-        // temp.find(".message").text(row.message);
-        // temp.find(".image").attr("src", row.image);
 
         // 개인 페이지 값 전달을 위해 data 값 세팅
         let showInfoLink = temp.find(".showInfoLink");
@@ -261,6 +245,7 @@ $(document).ready(function () {
 
 //수정기능
 
+
 $(document).on("click", ".edit", function () {
     console.log("수정 버튼 클릭");
 
@@ -273,13 +258,16 @@ $(document).on("click", ".edit", function () {
     let git = card.find(".git").text();
     let blog = card.find(".blog").text();
     let message = card.find(".message").text();
-    let id = card.data("id");
+    let id = card.data("id"); // Firestore 문서 ID 가져오기
+    let index = card.find(".index").text(); // index 값 가져오기
 
+    // index 값이 올바른지 로그로 확인
+    console.log("가져온 index:", index);
 
     // 모달에 기존 정보 세팅
     $("#modalName").val(name);
-    let age = ageWithSuffix.replace("살", ""); 
-    $("#modalAge").val(age);
+    let age = ageWithSuffix.replace("살", "");
+    $("#modalAge").val(age); // 숫자만 설정
     $("#modalGender").val(gender);
     $("#modalMbti").val(mbti);
     $("#modalHobby").val(hobby);
@@ -291,14 +279,23 @@ $(document).on("click", ".edit", function () {
     // 모달 오픈
     $("#createMember").modal("show");
 
-    // 수정할 때 Firestore 문서 ID 저장
-    $("#saveBtn").data("id", id); // 카드에 저장된 Firestore 문서 ID 사용
+    // 수정할 때 Firestore 문서 index 저장
+    $("#editBtn").data("index", index); // editBtn에 index 저장
 
-
+    // editBtn을 보이게 하고 saveBtn 숨기기
+    $("#editBtn").show(); // editBtn 보이기
+    $("#saveBtn").hide(); // saveBtn 숨기기
 });
 
-$("#saveBtn").on("click", async function () {
-    const id = $(this).data("id"); // 수정할 Firestore 문서 ID 가져오기
+$("#editBtn").on("click", async function () {
+    console.log("수정하기 버튼 클릭");
+    const index = $(this).data("index"); // 수정할 Firestore 문서 index 가져오기
+
+    if (!index) {
+        console.error("문서 index를 찾을 수 없습니다.");
+        alert("문서 index를 찾을 수 없습니다.");
+        return;
+    }
 
     let image = $("#modalImg").val();
     let name = $("#modalName").val();
@@ -306,12 +303,20 @@ $("#saveBtn").on("click", async function () {
     let age = $("#modalAge").val();
     let mbti = $("#modalMbti").val();
     let hobby = $("#modalHobby").val();
-    let git = checkLink($("#modalGit").val()); 
-    let blog = checkLink($("#modalBlog").val()); 
+    let git = checkLink($("#modalGit").val());
+    let blog = checkLink($("#modalBlog").val());
     let message = $("#modalMsg").val();
     let date = getTodayDate(); // 현재 날짜 가져오기
 
-    const docRef = doc(db, "members", id); // Firestore 문서 참조
+    // Firestore에서 해당 index를 가진 문서 참조
+    const q = query(collection(db, "members"), where("index", "==", parseInt(index))); // index를 숫자로 변환
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+        alert("해당 index에 대한 문서를 찾을 수 없습니다.");
+        return;
+    }
+
+    const docRef = querySnapshot.docs[0].ref; // 첫 번째 문서 참조
 
     // Firestore에서 수정
     try {
@@ -328,14 +333,12 @@ $("#saveBtn").on("click", async function () {
             date: date
         });
 
-        console.log(`문서 (${id}) 업데이트 완료!`);
-
         // 수정된 내용을 기존 멤버 카드에 반영
-        const card = $(`[data-id='${id}']`); // 수정된 카드 찾기
+        const card = $(`[data-id='${docRef.id}']`); // 수정된 카드 찾기
         card.find(".image").attr("src", image);
         card.find(".name").text(name);
         card.find(".gender").text(gender);
-        card.find(".age").text(age);
+        card.find(".age").text(age + "살");
         card.find(".mbti").text(mbti);
         card.find(".hobby").text(hobby);
         card.find(".git").text(git);
@@ -348,7 +351,7 @@ $("#saveBtn").on("click", async function () {
         console.error("문서 업데이트 실패:", error);
         alert("정보 수정 중 오류가 발생했습니다.");
     }
+    window.location.reload();
 });
-
 
 

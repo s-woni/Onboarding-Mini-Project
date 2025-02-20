@@ -19,6 +19,37 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/***************************************************************************************************************************** */
+
+$(document).ready(function() {
+
+    // 팀원 목록 조회
+    loadMembers();
+
+    // 팀원 등록
+    $("#saveBtn").on("click", addMember);
+
+    // 팀원 삭제
+    $(document).on("click", ".delete", deleteMember);
+
+    $("#addBtn").hover(
+        function () {
+            $(this).css("background-color", "black");
+        },
+        function () {
+            $(this).css("background-color", "#6c757d");
+        }
+    );
+
+    $(document).on("mouseenter", ".delete", function () {
+        $(this).css("color", "red");
+    });
+
+    $(document).on("mouseleave", ".delete", function () {
+        $(this).css("color", "gray");
+    }); 
+});
+
 // 마지막 인덱스를 가져오는 함수
 async function getLastIndex() {
     const q = query(collection(db, "members"), orderBy("index", "desc"), limit(1));
@@ -31,6 +62,7 @@ async function getLastIndex() {
     }
 }
 
+// 입력 값 체크
 function checkInput() {
     // 입력값 가져오기
     let fields = [
@@ -68,7 +100,7 @@ function getTodayDate() {
     return `${year}-${month}-${day}`;
 }
 
-
+// 팀원 목록 조회
 async function loadMembers() {
     $("#cards").empty();
     let docs = await getDocs(collection(db, "members"));
@@ -124,6 +156,7 @@ async function loadMembers() {
     });
 }
 
+// 링크 형식 검사
 function checkLink(link) {
     if (!link.startsWith("http://") && !link.startsWith("https://")) {
         link = "https://" + link;
@@ -131,7 +164,48 @@ function checkLink(link) {
     return link;
 }
 
-// 팀원 삭제 함수
+// 팀원 등록
+async function addMember() {
+    const lastIndex = await getLastIndex(); // 마지막 인덱스 가져오기
+    const newIndex = lastIndex + 1; // 새로운 인덱스 = 마지막 인덱스 + 1
+
+    let userGit = $("#modalGit").val();
+    let userBlog = $("#modalBlog").val();
+
+    let index = newIndex;
+    let image = $("#modalImg").val();
+    let name = $("#modalName").val();
+    let gender = $("#modalGender").val();
+    let age = $("#modalAge").val();
+    let mbti = $("#modalMbti").val();
+    let hobby = $("#modalHobby").val();
+    let git = checkLink(userGit);
+    let blog = checkLink(userBlog);
+    let message = $("#modalMsg").val();
+    let date = getTodayDate();
+
+    let doc = {
+        'index': index,
+        'image': image,
+        'name': name,
+        'gender': gender,
+        'age': age,
+        'mbti': mbti,
+        'hobby': hobby,
+        'git': git,
+        'blog': blog,
+        'message': message,
+        'date':date
+    };
+
+    if(checkInput()) {
+        await addDoc(collection(db, "members"), doc);
+        alert("팀원 정보가 저장되었습니다.");
+        window.location.reload();    
+    }
+}
+
+// 팀원 삭제
 async function deleteMember() {
     let card = $(this).closest(".col"); // 클릭한 버튼의 카드 찾기
     let memberIndex = card.find(".index").text(); // 해당 카드의 인덱스 가져오기
@@ -171,74 +245,3 @@ async function deleteMember() {
         alert("삭제 실패하였습니다.");
     }
 }
-
-$(document).ready(function() {
-
-    // 팀원 정보 불러오기
-    loadMembers();
-
-    // 팀원 정보 저장하기
-    $("#saveBtn").on("click", async function() {
-        const lastIndex = await getLastIndex(); // 마지막 인덱스 가져오기
-        const newIndex = lastIndex + 1; // 새로운 인덱스 = 마지막 인덱스 + 1
-
-        let userGit = $("#modalGit").val();
-        let userBlog = $("#modalBlog").val();
-
-        let index = newIndex;
-        let image = $("#modalImg").val();
-        let name = $("#modalName").val();
-        let gender = $("#modalGender").val();
-        let age = $("#modalAge").val();
-        let mbti = $("#modalMbti").val();
-        let hobby = $("#modalHobby").val();
-        let git = checkLink(userGit);
-        let blog = checkLink(userBlog);
-        let message = $("#modalMsg").val();
-        let date = getTodayDate();
-
-        let doc = {
-            'index': index,
-            'image': image,
-            'name': name,
-            'gender': gender,
-            'age': age,
-            'mbti': mbti,
-            'hobby': hobby,
-            'git': git,
-            'blog': blog,
-            'message': message,
-            'date':date
-        };
-
-        if(checkInput()) {
-            await addDoc(collection(db, "members"), doc);
-            alert("팀원 정보가 저장되었습니다.");
-            window.location.reload();    
-        }
-
-    });
-
-    // 팀원 정보 삭제하기
-    $(document).on("click", ".delete", deleteMember);
-
-    $("#addBtn").hover(
-        function () {
-            $(this).css("background-color", "black");
-        },
-        function () {
-            $(this).css("background-color", "#6c757d");
-        }
-    );
-
-    $(document).on("mouseenter", ".delete", function () {
-        $(this).css("color", "red");
-    });
-
-    $(document).on("mouseleave", ".delete", function () {
-        $(this).css("color", "gray");
-    });
-    
-})
-
-

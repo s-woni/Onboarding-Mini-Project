@@ -51,7 +51,7 @@
     align-items: center;
 }
 
-.delete, .guest-delete, .guest-update {
+.delete, .edit, .guest-delete, .guest-update {
     color: gray;
 
     margin-left: auto;
@@ -59,6 +59,10 @@
 
     display: flex;
     align-items: center;
+}
+
+.delete {
+    margin-left: 10px;
 }
 
 .guest-update {

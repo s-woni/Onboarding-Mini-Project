@@ -284,7 +284,11 @@ $(document).ready(function () {
                 temp.find('.guest-pw').text(pwd);
                 temp.find('#update-guest-comment').html(comment);
                 list.after(temp);
-                console.log("list.next('#guestbook-update-div').length: ", list.next('#guestbook-update-div').length);
+
+                // 마지막 댓글인지 체크
+                let isLast = list.next("li").is(":last-child");
+                if(isLast) scrollToLastComment();
+
             } else {
                alert("비밀번호가 일치하지 않습니다.");
             }    
